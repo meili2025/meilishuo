@@ -1,0 +1,41 @@
+import tweepy
+
+# 填入你的Twitter API密钥和访问令牌
+consumer_key = "YOUR_CONSUMER_KEY"
+consumer_secret = "YOUR_CONSUMER_SECRET"
+access_token = "YOUR_ACCESS_TOKEN"
+access_token_secret = "YOUR_ACCESS_TOKEN_SECRET"
+
+# 授权访问Twitter API
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_token, access_token_secret)
+
+# 创建API对象
+api = tweepy.API(auth)
+
+def search_tweets(keyword, count):
+    tweets = []
+    try:
+        # 搜索关键词相关的推文
+        search_results = tweepy.Cursor(api.search, q=keyword, tweet_mode="extended").items(count)
+
+        # 遍历搜索结果
+        for tweet in search_results:
+            tweets.append(tweet.full_text)
+
+    except tweepy.TweepError as e:
+        print("Error: ", str(e))
+
+    return tweets
+
+# 指定关键词和要获取的推文数量
+keyword = "YOUR_KEYWORD"
+tweet_count = 100
+
+# 调用函数获取推文
+tweets = search_tweets(keyword, tweet_count)
+
+# 打印获取到的推文内容
+for tweet in tweets:
+    print(tweet)
+    print("------------")
